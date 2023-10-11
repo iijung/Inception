@@ -13,6 +13,13 @@ volumes:
       o: "bind"
       type: "none"
       device: ${MARIADB_VOLUME}
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      o: "bind"
+      type: "none"
+      device: ${WORDPRESS_VOLUME}
 
 services:
   mariadb:
@@ -27,5 +34,27 @@ services:
     init: true
     restart: on-failure:3
     container_name: mariadb
-    image: mariadb
+    image: mariadb:minjungk
     build: ./requirements/mariadb
+    healthcheck:
+      test: ['CMD-SHELL', 'mariadb-admin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  wordpress:
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    expose:
+      - "9000"
+    networks:
+      - inception
+    volumes:
+      - wordpress:/var/www
+    env_file:
+      - .env
+    restart: on-failure:3
+    container_name: wordpress
+    image: wordpress:minjungk
+    build: ./requirements/wordpress
