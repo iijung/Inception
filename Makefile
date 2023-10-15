@@ -6,10 +6,11 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 05:17:52 by minjungk          #+#    #+#              #
-#    Updated: 2023/10/09 04:42:35 by minjungk         ###   ########.fr        #
+#    Updated: 2023/10/15 11:11:47 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+.DELETE_ON_ERROR:
 .DEFAULT_GOAL	:= all
 
 # **************************************************************************** #
@@ -40,7 +41,7 @@ MARIADB_VOLUME		:= $(VOLUME_PATH)/mariadb
 WORDPRESS_VOLUME	:= $(VOLUME_PATH)/wordpress
 export MARIADB_VOLUME WORDPRESS_VOLUME
 
-all: setup 
+all: setup ssl
 	@mkdir -p $(MARIADB_VOLUME) $(WORDPRESS_VOLUME)
 	$(COMPOSE) up -d --build
 
@@ -81,6 +82,17 @@ $(ENVIRON_FILE): $(TEMPLATE_FILE)
 		fi \
 	done 3< "$(TEMPLATE_FILE)"
 	@echo "$@ file created successfully."
+
+# **************************************************************************** #
+# openssl
+# **************************************************************************** #
+.PHONY: ssl ssl-clean
+
+ssl: #| ${CERTS_}/${DOMAIN_NAME}.crt
+	make -C srcs -f ./requirements/tools/certificates.mk
+
+ssl-clean:
+	make -C srcs -f ./requirements/tools/certificates.mk clean
 
 # **************************************************************************** #
 # for monitoring
