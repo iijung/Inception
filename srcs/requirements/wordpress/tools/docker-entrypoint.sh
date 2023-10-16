@@ -12,7 +12,7 @@ if [ ! -e wp-config.php ]; then
 		--dbname=$MYSQL_DATABASE
 fi
 
-if [ ! "$(wp core is-installed)" ]; then
+if ! wp core is-installed; then
 	wp core install \
 		--locale=ko_KR \
 		--url=${DOMAIN_NAME} \
