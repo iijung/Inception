@@ -4,7 +4,7 @@ FROM alpine:3.17.5
 # Installation
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache curl php81 php81-curl php81-phar php81-fpm php81-mysqli php81-mbstring mariadb-client && \
+    apk add --no-cache curl php81 php81-curl php81-phar php81-fpm php81-mysqli php81-mbstring mariadb-client fcgi && \
     rm -rf /var/cache/apk/*
 
 # Configuration
@@ -20,3 +20,4 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 9000
 VOLUME ["/var/www"]
 STOPSIGNAL SIGQUIT
+HEALTHCHECK --interval=30s --timeout=3s CMD cgi-fcgi -bind -connect localhost:9000 || exit 1

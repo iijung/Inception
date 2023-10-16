@@ -60,6 +60,11 @@ services:
     container_name: wordpress
     image: wordpress:minjungk
     build: ./requirements/wordpress
+    healthcheck:
+      test: ['CMD-SHELL', 'cgi-fcgi -bind -connect localhost:9000']
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
   nginx:
     depends_on:
