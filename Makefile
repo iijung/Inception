@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 05:17:52 by minjungk          #+#    #+#              #
-#    Updated: 2023/10/15 11:11:47 by minjungk         ###   ########.fr        #
+#    Updated: 2023/10/19 15:43:32 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ all: setup ssl
 	$(COMPOSE) up -d --build
 
 clean:
+	export COMPOSE_PROFILES=bonus; \
 	$(COMPOSE) down --rmi all --volumes
 
 fclean: clean
