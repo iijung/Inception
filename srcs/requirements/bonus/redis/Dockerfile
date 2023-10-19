@@ -10,7 +10,6 @@ RUN apk update && \
 COPY --chmod=644 conf/redis.conf /etc/redis.conf
 
 # Start
-WORKDIR /var/lib/mysql
 ENTRYPOINT ["redis-server", "/etc/redis.conf"]
 
 EXPOSE 6379
