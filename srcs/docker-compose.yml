@@ -89,6 +89,26 @@ services:
       - server.pem
       - server.key
 
+  redis:
+    profiles:
+      - bonus
+    expose:
+      - "6379"
+    networks:
+      - inception
+    env_file:
+      - .env
+    init: true
+    restart: on-failure:3
+    container_name: redis
+    image: redis:minjungk
+    build: ./requirements/bonus/redis
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
 secrets:
   server.pem:
     file: ${CERTS_}/${DOMAIN_NAME}.pem
