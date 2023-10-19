@@ -26,6 +26,16 @@ if ! wp core is-installed; then
 		--user_pass=${WORDPRESS_PASSWORD}
 fi
 
+for profile in ${COMPOSE_PROFILES//,/$IFS}; do
+	if [ "$profile" == "bonus" ]; then
+		if wp plugin get redis-cache; then
+			wp config set WP_REDIS_HOST "reids"
+			wp config set WP_REDIS_PORT "6379"
+			wp redis enable
+		fi
+	fi
+done
+
 wp plugin update --all
 
 # Execute

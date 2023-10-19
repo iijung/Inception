@@ -44,6 +44,8 @@ services:
 
   wordpress:
     depends_on:
+      redis:
+        condition: service_healthy
       mariadb:
         condition: service_healthy
     expose:
@@ -55,6 +57,7 @@ services:
     env_file:
       - .env
     environment:
+      - COMPOSE_PROFILES
       - HTTP_HOST=${DOMAIN_NAME}
     restart: on-failure:3
     container_name: wordpress
