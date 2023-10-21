@@ -112,6 +112,30 @@ services:
       timeout: 3s
       retries: 3
 
+  ftp:
+    profiles:
+      - bonus
+    expose:
+      - "20-21"
+    ports:
+      - "20-21:20-21"
+    networks:
+      - inception
+    volumes:
+      - wordpress:/var/www
+    env_file:
+      - .env
+    init: true
+    restart: on-failure:3
+    container_name: ftp
+    image: ftp:minjungk
+    build: ./requirements/bonus/ftp
+    healthcheck:
+      test: ['CMD-SHELL', 'nc -zv localhost']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
 secrets:
   server.pem:
     file: ${CERTS_}/${DOMAIN_NAME}.pem
