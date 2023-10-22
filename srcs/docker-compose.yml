@@ -141,6 +141,23 @@ services:
       timeout: 3s
       retries: 3
 
+  web:
+    profiles:
+      - bonus
+    expose:
+      - "80"
+    ports:
+      - "80:80"
+    networks:
+      - inception
+    env_file:
+      - .env
+    init: true
+    restart: on-failure:3
+    container_name: web
+    image: web:minjungk
+    build: ./requirements/bonus/web
+
 secrets:
   server.pem:
     file: ${CERTS_}/${DOMAIN_NAME}.pem
