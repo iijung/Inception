@@ -116,22 +116,27 @@ services:
     profiles:
       - bonus
     expose:
-      - "20-21"
+      - "21"
+      - "21100-21110"
     ports:
-      - "20-21:20-21"
+      - "21:21"
+      - "21100-21110:21100-21110"
     networks:
       - inception
     volumes:
-      - wordpress:/var/www
+      - wordpress:/home/${FTP_USER}
     env_file:
       - .env
     init: true
     restart: on-failure:3
     container_name: ftp
     image: ftp:minjungk
-    build: ./requirements/bonus/ftp
+    build:
+      context: ./requirements/bonus/ftp
+      args:
+        - FTP_USER=${FTP_USER}
     healthcheck:
-      test: ['CMD-SHELL', 'nc -zv localhost']
+      test: ['CMD-SHELL', 'nc -zv localhost 21']
       interval: 10s
       timeout: 3s
       retries: 3
