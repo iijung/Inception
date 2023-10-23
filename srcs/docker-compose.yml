@@ -38,7 +38,7 @@ services:
     build: ./requirements/mariadb
     healthcheck:
       test: ['CMD-SHELL', 'mariadb-admin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
-      interval: 10s
+      interval: 30s
       timeout: 3s
       retries: 3
 
@@ -65,7 +65,7 @@ services:
     build: ./requirements/wordpress
     healthcheck:
       test: ['CMD-SHELL', 'cgi-fcgi -bind -connect localhost:9000']
-      interval: 10s
+      interval: 30s
       timeout: 3s
       retries: 3
 
@@ -88,6 +88,11 @@ services:
     container_name: nginx
     image: nginx:minjungk
     build: ./requirements/nginx
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f https://localhost:443']
+      interval: 30s
+      timeout: 3s
+      retries: 3
     secrets:
       - server.pem
       - server.key
@@ -108,7 +113,7 @@ services:
     build: ./requirements/bonus/redis
     healthcheck:
       test: ['CMD-SHELL', 'redis-cli ping']
-      interval: 10s
+      interval: 30s
       timeout: 3s
       retries: 3
 
@@ -137,7 +142,7 @@ services:
         - FTP_USER=${FTP_USER}
     healthcheck:
       test: ['CMD-SHELL', 'nc -zv localhost 21']
-      interval: 10s
+      interval: 30s
       timeout: 3s
       retries: 3
 
@@ -157,6 +162,11 @@ services:
     container_name: web
     image: web:minjungk
     build: ./requirements/bonus/web
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:80']
+      interval: 30s
+      timeout: 3s
+      retries: 3
 
 secrets:
   server.pem:

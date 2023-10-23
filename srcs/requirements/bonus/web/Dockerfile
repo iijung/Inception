@@ -25,7 +25,7 @@ FROM alpine:3.17.5
 # Installation
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache lighttpd && \
+    apk add --no-cache lighttpd curl && \
     rm -rf /var/cache/apk/*
 
 # Configuration
@@ -37,4 +37,4 @@ ENTRYPOINT ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
 
 EXPOSE 80
 STOPSIGNAL SIGQUIT
-#HEALTHCHECK --interval=10s --timeout=3s CMD curl -f http://localhost:80 || exit 1
+HEALTHCHECK --interval=10s --timeout=3s CMD curl -f http://localhost:80 || exit 1
