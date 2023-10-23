@@ -20,4 +20,4 @@ ENTRYPOINT ["nginx", "-g", "daemon off;"]
 EXPOSE 443
 VOLUME ["/var/www"]
 STOPSIGNAL SIGQUIT
-HEALTHCHECK --interval=10s --timeout=3s CMD curl -f https://localhost:443 || exit 1
+HEALTHCHECK --interval=10s --timeout=3s CMD curl -k https://localhost:443 || exit 1
