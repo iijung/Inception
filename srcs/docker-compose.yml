@@ -168,6 +168,28 @@ services:
       timeout: 3s
       retries: 3
 
+  adminer:
+    profiles:
+      - bonus
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    networks:
+      - inception
+    env_file:
+      - .env
+    init: true
+    restart: on-failure:3
+    container_name: adminer
+    image: adminer:minjungk
+    build: ./requirements/bonus/adminer
+    healthcheck:
+      test: ['CMD-SHELL', 'nc -zv localhost 8080']
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
 secrets:
   server.pem:
     file: ${CERTS_}/${DOMAIN_NAME}.pem
