@@ -2,6 +2,7 @@
 
 set -e
 
+umask 0002
 if [ ! -e wp-config.php ]; then
 	wp core download --path=/var/www --locale=ko_KR --version=6.3.1
 	wp config create \

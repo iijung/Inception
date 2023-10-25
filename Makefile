@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 05:17:52 by minjungk          #+#    #+#              #
-#    Updated: 2023/10/19 15:43:32 by minjungk         ###   ########.fr        #
+#    Updated: 2023/10/26 01:55:15 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,6 +101,7 @@ ssl-clean:
 .PHONY: version ps top logs events
 
 version ps top logs events:
+	export COMPOSE_PROFILES=bonus; \
 	$(COMPOSE) $@
 
 .PHONY: network volume

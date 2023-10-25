@@ -5,9 +5,7 @@ FROM alpine:3.17.5
 RUN apk update && \
     apk upgrade && \
     apk add --no-cache openssl nginx curl && \
-    adduser -D -g 'www' www && \
-    mkdir /www && \
-    chown -R www:www /var/lib/nginx && \
+    adduser -u 1000 -D -h /var/www www && \
     chown -R www:www /var/www && \
     rm -rf /var/cache/apk/*
 
