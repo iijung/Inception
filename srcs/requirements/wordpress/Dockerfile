@@ -9,7 +9,6 @@ RUN apk update && \
 
 # Configuration
 ADD --chmod=755 https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp
-RUN wp core download --path=/var/www --locale=ko_KR --version=6.3.1
 COPY --chmod=644 conf/www.conf /etc/php81/php-fpm.d/www.conf
 COPY --chmod=755 tools/docker-entrypoint.sh /
 

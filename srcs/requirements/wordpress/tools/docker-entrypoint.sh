@@ -3,6 +3,7 @@
 set -e
 
 if [ ! -e wp-config.php ]; then
+	wp core download --path=/var/www --locale=ko_KR --version=6.3.1
 	wp config create \
 		--force \
 		--skip-check \
@@ -28,9 +29,11 @@ fi
 
 for profile in ${COMPOSE_PROFILES//,/$IFS}; do
 	if [ "$profile" == "bonus" ]; then
-		if wp plugin get redis-cache; then
-			wp config set WP_REDIS_HOST "reids"
+		echo bonus profile found.
+		if ! wp plugin get redis-cache 2&> /dev/null; then
+			wp config set WP_REDIS_HOST "redis"
 			wp config set WP_REDIS_PORT "6379"
+			wp plugin install redis-cache --activate
 			wp redis enable
 		fi
 	fi
