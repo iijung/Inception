@@ -190,6 +190,23 @@ services:
       timeout: 3s
       retries: 3
 
+  exim:
+    profiles:
+      - bonus
+    expose:
+      - "25"
+    ports:
+      - "25:25"
+    networks:
+      - inception
+    env_file:
+      - .env
+    init: true
+    restart: on-failure:3
+    container_name: exim
+    image: exim:minjungk
+    build: ./requirements/bonus/exim
+
 secrets:
   server.pem:
     file: ${CERTS_}/${DOMAIN_NAME}.pem

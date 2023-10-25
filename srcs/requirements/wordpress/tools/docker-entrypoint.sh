@@ -37,6 +37,21 @@ for profile in ${COMPOSE_PROFILES//,/$IFS}; do
 			wp plugin install redis-cache --activate
 			wp redis enable
 		fi
+#		if ! wp plugin get wp-mail-smtp 2&> /dev/null; then
+#			wp config set WPMS_ON true
+#			wp config set WPMS_SMTP_HOST exim
+#			wp config set WPMS_SMTP_PORT 25
+#			wp config set WPMS_SSL ""				# '', 'ssl', 'tls'
+#			wp config set WPMS_SMTP_AUTH true
+#			wp config set WPMS_SMTP_USER $EXIM_USER	# Auth username
+#			wp config set WPMS_SMTP_PASS $EXIM_PASS	# Auth password
+#			wp config set WPMS_SMTP_AUTOTLS true
+#			wp config set WPMS_MAILER smtp
+#			wp plugin install wp-mail-smtp --activate
+#		fi
+#		if ! wp plugin get comment-reply-email-notification 2&> /dev/null; then
+#			wp plugin install comment-reply-email-notification --activate
+#		fi
 	fi
 done
 
