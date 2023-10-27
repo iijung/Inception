@@ -17,3 +17,5 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["exim", "-bd", "-q15m"]
 
 EXPOSE 25
+STOPSIGNAL SIGQUIT
+HEALTHCHECK --interval=10s --start-period=3m --timeout=3s CMD nc -zv localhost 21 || exit 1
