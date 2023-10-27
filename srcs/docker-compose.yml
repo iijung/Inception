@@ -38,7 +38,7 @@ services:
     build: ./requirements/mariadb
     healthcheck:
       test: ['CMD-SHELL', 'mariadb-admin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
 
@@ -65,7 +65,7 @@ services:
     build: ./requirements/wordpress
     healthcheck:
       test: ['CMD-SHELL', 'cgi-fcgi -bind -connect localhost:9000']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
 
@@ -90,7 +90,7 @@ services:
     build: ./requirements/nginx
     healthcheck:
       test: ['CMD-SHELL', 'curl -k https://localhost:443']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
     secrets:
@@ -113,7 +113,7 @@ services:
     build: ./requirements/bonus/redis
     healthcheck:
       test: ['CMD-SHELL', 'redis-cli ping']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
 
@@ -142,7 +142,7 @@ services:
         - FTP_USER=${FTP_USER}
     healthcheck:
       test: ['CMD-SHELL', 'nc -zv localhost 21']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
 
@@ -164,7 +164,7 @@ services:
     build: ./requirements/bonus/web
     healthcheck:
       test: ['CMD-SHELL', 'curl -f http://localhost:80']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
 
@@ -186,7 +186,7 @@ services:
     build: ./requirements/bonus/adminer
     healthcheck:
       test: ['CMD-SHELL', 'nc -zv localhost 8080']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
 
@@ -208,7 +208,7 @@ services:
     build: ./requirements/bonus/exim
     healthcheck:
       test: ['CMD-SHELL', 'nc -zv localhost 25']
-      interval: 30s
+      interval: 10s
       timeout: 3s
       retries: 3
 
