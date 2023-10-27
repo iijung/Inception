@@ -2,10 +2,14 @@
 
 set -e
 
+sudo_wp() {
+	su www -c "wp $*"
+}
+
 umask 0002
 if [ ! -e wp-config.php ]; then
-	wp core download --path=/var/www --locale=ko_KR --version=6.3.1
-	wp config create \
+	sudo_wp core download --path=/var/www --locale=ko_KR --version=6.3.1
+	sudo_wp config create \
 		--force \
 		--skip-check \
 		--dbhost=mariadb \
@@ -14,15 +18,15 @@ if [ ! -e wp-config.php ]; then
 		--dbname=$MYSQL_DATABASE
 fi
 
-if ! wp core is-installed; then
-	wp core install \
+if ! sudo_wp core is-installed; then
+	sudo_wp core install \
 		--locale=ko_KR \
 		--url=${DOMAIN_NAME} \
 		--title=Inception \
 		--admin_user=${WORDPRESS_ADMIN_USER} \
 		--admin_email=${WORDPRESS_ADMIN_EMAIL} \
 		--admin_password=${WORDPRESS_ADMIN_PASSWORD}
-	wp user create \
+	sudo_wp user create \
 		${WORDPRESS_USER} \
 		${WORDPRESS_EMAIL} \
 		--user_pass=${WORDPRESS_PASSWORD}
@@ -31,31 +35,31 @@ fi
 for profile in ${COMPOSE_PROFILES//,/$IFS}; do
 	if [ "$profile" == "bonus" ]; then
 		echo bonus profile found.
-		if ! wp plugin get redis-cache 2&> /dev/null; then
-			wp config set WP_REDIS_HOST "redis"
-			wp config set WP_REDIS_PORT "6379"
-			wp plugin install redis-cache --activate
-			wp redis enable
+		if ! sudo_wp plugin get redis-cache 2&> /dev/null; then
+			sudo_wp config set WP_REDIS_HOST redis
+			sudo_wp config set WP_REDIS_PORT 6379
+			sudo_wp plugin install redis-cache --activate
+			sudo_wp redis enable
 		fi
-#		if ! wp plugin get wp-mail-smtp 2&> /dev/null; then
-#			wp config set WPMS_ON true
-#			wp config set WPMS_SMTP_HOST exim
-#			wp config set WPMS_SMTP_PORT 25
-#			wp config set WPMS_SSL ""				# '', 'ssl', 'tls'
-#			wp config set WPMS_SMTP_AUTH true
-#			wp config set WPMS_SMTP_USER $EXIM_USER	# Auth username
-#			wp config set WPMS_SMTP_PASS $EXIM_PASS	# Auth password
-#			wp config set WPMS_SMTP_AUTOTLS true
-#			wp config set WPMS_MAILER smtp
-#			wp plugin install wp-mail-smtp --activate
-#		fi
-#		if ! wp plugin get comment-reply-email-notification 2&> /dev/null; then
-#			wp plugin install comment-reply-email-notification --activate
-#		fi
+		if ! sudo_wp plugin get wp-mail-smtp 2&> /dev/null; then
+			sudo_wp config set WPMS_ON true
+			sudo_wp config set WPMS_SMTP_HOST exim
+			sudo_wp config set WPMS_SMTP_PORT 25
+			sudo_wp config set WPMS_SSL "''"				# '', 'ssl', 'tls'
+			sudo_wp config set WPMS_SMTP_AUTH true
+			sudo_wp config set WPMS_SMTP_USER $EXIM_USER	# Auth username
+			sudo_wp config set WPMS_SMTP_PASS $EXIM_PASS	# Auth password
+			sudo_wp config set WPMS_SMTP_AUTOTLS true
+			sudo_wp config set WPMS_MAILER smtp
+			sudo_wp plugin install wp-mail-smtp --activate
+		fi
+		if ! sudo_wp plugin get comment-reply-email-notification 2&> /dev/null; then
+			sudo_wp plugin install comment-reply-email-notification --activate
+		fi
 	fi
 done
 
-wp plugin update --all
+sudo_wp plugin update --all
 
 # Execute
 php-fpm81 -F
