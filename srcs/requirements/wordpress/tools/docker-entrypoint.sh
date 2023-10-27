@@ -42,14 +42,14 @@ for profile in ${COMPOSE_PROFILES//,/$IFS}; do
 			sudo_wp redis enable
 		fi
 		if ! sudo_wp plugin get wp-mail-smtp 2&> /dev/null; then
-			sudo_wp config set WPMS_ON true
+			sudo_wp config set WPMS_ON true --raw
 			sudo_wp config set WPMS_SMTP_HOST exim
 			sudo_wp config set WPMS_SMTP_PORT 25
 			sudo_wp config set WPMS_SSL "''"				# '', 'ssl', 'tls'
-			sudo_wp config set WPMS_SMTP_AUTH true
+			sudo_wp config set WPMS_SMTP_AUTH false --raw
 			sudo_wp config set WPMS_SMTP_USER $EXIM_USER	# Auth username
 			sudo_wp config set WPMS_SMTP_PASS $EXIM_PASS	# Auth password
-			sudo_wp config set WPMS_SMTP_AUTOTLS true
+			sudo_wp config set WPMS_SMTP_AUTOTLS false --raw
 			sudo_wp config set WPMS_MAILER smtp
 			sudo_wp plugin install wp-mail-smtp --activate
 		fi
