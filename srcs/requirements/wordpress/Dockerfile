@@ -4,7 +4,7 @@ FROM alpine:3.17.5
 # Installation
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache curl php81 php81-curl php81-phar php81-fpm php81-mysqli php81-mbstring php81-tokenizer mariadb-client fcgi && \
+    apk add --no-cache curl php81 php81-curl php81-phar php81-fpm php81-mysqli php81-mbstring php81-tokenizer php81-dom php81-exif php81-fileinfo php81-pecl-imagick php81-zip php81-gd php81-iconv php81-intl mariadb-client fcgi && \
     adduser -u 1000 -D -h /var/www www && \
     chown -R www:www /var/www && \
     rm -rf /var/cache/apk/*
