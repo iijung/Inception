@@ -6,7 +6,7 @@
 #    By: minjungk <minjungk@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 05:17:52 by minjungk          #+#    #+#              #
-#    Updated: 2023/10/26 01:55:15 by minjungk         ###   ########.fr        #
+#    Updated: 2024/08/18 09:14:33 by minjungk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ setup: | $(ENVIRON_FILE)
 $(ENVIRON_FILE): $(TEMPLATE_FILE)
 	@echo "Creating $@ file..."
 	@echo -n > $@
-	@while IFS= read -r -u3 line; do \
+	@while IFS= read -r line <&3; do \
 		if echo "$$line" | grep -qE '[^#].*=.*'; then \
 			read -p "$$line" value; \
 			echo "$$line$$value" >> $@; \
